@@ -1,0 +1,110 @@
+1. User Authentication
+- Users should have the option to reset their password.
+- Authentication tokens should be used for session management.
+
+3. Article Categorization
+- Users should be able to browse articles based on categories.
+
+4. Comment System
+- Users should be able to comment on blog posts. 
+Order(My post's in chronological order; Other's post in chronological order)
+- Comments should be displayed in chronological order.
+
+5. Search Functionality
+- Users should be able to search for blog posts using a search bar.
+- Search should work based on post titles and content.
+- Search results should be displayed in a user-friendly manner, showing matching titles and contents.
+- The search should be case-insensitive and support partial word matching.
+
+Password Reset Form Validation:
+1. Email:
+- Must be a valid email format.
+- Cannot be empty.
+2. New Password:
+- Must be at least 8 characters long.
+- Should contain at least one uppercase letter, one lowercase letter, one number, and one special character.
+3. Confirm New Password:
+- Must match the new password. 
+
+
+Article Management
+1. Create New Blog Post
+
+* Title Field
+- Required (must not be empty)
+- Minimum length: 5 characters
+- Maximum length: 150 characters
+- No special characters except punctuation
+
+
+
+2. Edit Blog Post
+* Users can only edit their own posts
+* Follows the same validation rules as creating a post
+* Changes must be saved before leaving the page (show confirmation prompt on unsaved changes)
+
+3. Delete Blog Post
+* Users can only delete their own posts
+* Show a confirmation popup before deleting (e.g., "Are you sure you want to delete this post?")
+
+Article Categorization
+1. Category Selection for Blog Post
+* Users must select at least one category.
+* A maximum of 3 categories can be selected per post.
+* Categories must be predefined (e.g., Technology, Lifestyle, Health, Education, etc.).
+* Display categories in a dropdown menu or as selectable tags.
+
+2. Browsing Articles by Category
+* Users can filter articles by selecting a category.
+* Show the number of posts available under each category.
+
+3. UI Feedback & Validations
+* If a user tries to submit a post without selecting a category, show an error message (e.g., "Please select at least one category.").
+* If a user selects more than 3 categories, show an error message (e.g., "You can select up to 3 categories only.").
+
+
+Comment System Validation:
+* Comment Form Validation: 
+- Name Field: 
+    	Must not be empty.
+    	Should have a maximum length (e.g., 255 characters).
+    	Should handle special characters gracefully ..
+- Content Field: 
+    	Must not be empty.
+     	Should have a maximum length (e.g., 1000 characters).
+    	Should handle line breaks and special characters correctly.
+- Timestamp: 
+    	The timestamp should be automatically generated and displayed correctly in a user-friendly format (e.g., "YYYY-MM-DD HH:MM:SS" or "Month Day, Year, Time").
+    	The timestamp should be read only for the user.
+
+* Comment Display Validation: 
+- Comments should be displayed in chronological order (oldest first).
+- Each comment should clearly display the commenter's name, content, and timestamp.
+- If a comment is deleted, it should be removed from the display 
+- If the user is logged in, and the comment belongs to that user, a delete button should be present. If the user is not logged in, or the comment does not belong to the user, the delete button should not be present.
+- If the delete button is present, upon clicking, a confirmation message should be displayed.
+
+* Delete Comment Validation: 
+- Only the user who posted a comment should be able to delete it.
+- A confirmation prompt should appear before deleting a comment.
+- After deletion, the comment should be removed from the display and database.
+
+2. Search Functionality Validation:
+* Search Bar Validation: 
+- The search bar should accept text input.
+- The search bar should visually indicate when it's active (e.g., focus state).
+- The search bar should have a clear visual cue that a search can be executed, such as a magnifying glass icon or a search button.
+
+* Search Input Validation: 
+- The search query should be treated as case-insensitive.
+- Partial word matching should be supported.
+- The search should handle special characters and whitespace correctly.
+- The search should handle very long search terms gracefully.
+
+* Search Results Validation: 
+- Search results should be displayed in a user-friendly format.
+- Matching titles and excerpts should be displayed.
+- If no results are found, a "No results found" message should be displayed.
+- The search results should highlight the portions of the title and excerpt that match the search query.(Optional)
+- The search results should be relevant to the search query.
+- The search results should be displayed in a logical order, such as relevance or date.

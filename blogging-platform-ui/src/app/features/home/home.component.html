@@ -1,0 +1,158 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to BlogHub</h1>
+      <p>Discover stories, ideas, and expertise from writers on any topic</p>
+      <div class="hero-actions">
+        <a mat-raised-button color="primary" routerLink="/articles">Explore Articles</a>
+        <a mat-stroked-button routerLink="/auth/register">Join Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Articles Section -->
+  <section class="section featured-section">
+    <div class="section-header">
+      <h2>Featured Articles</h2>
+      <a mat-button color="primary" routerLink="/articles">View All</a>
+    </div>
+
+    <div class="loading-container" *ngIf="isLoadingArticles">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <div class="error-container" *ngIf="articlesError && !isLoadingArticles">
+      <mat-icon color="warn">error</mat-icon>
+      <p>Failed to load articles. Please try again later.</p>
+    </div>
+
+    <div class="featured-articles" *ngIf="!isLoadingArticles && !articlesError && featuredArticles.length > 0">
+      <mat-card class="featured-article-card" *ngFor="let article of featuredArticles">
+        <div class="card-image-container" *ngIf="article.imagePath">
+          <img mat-card-image [src]="getImageUrl(article.imagePath)" [alt]="article.title">
+        </div>
+        <mat-card-content>
+          <div class="article-meta">
+            <span class="article-date">{{ article.createdAt | date }}</span>
+            <span class="article-category" *ngIf="article.categories && article.categories.length && article.categories.length > 0">
+              {{ article.categories[0].name }}
+            </span>
+          </div>
+          <h3 class="article-title">
+            <a [routerLink]="['/articles', article.id]">{{ article.title }}</a>
+          </h3>
+          <p class="article-excerpt">{{ getArticleExcerpt(article.content) }}</p>
+          <div class="article-author" *ngIf="article.author">
+            <span class="author-name">By {{ article.author.firstName }} {{ article.author.lastName }}</span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-button color="primary" [routerLink]="['/articles', article.id]">Read More</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoadingArticles && !articlesError && featuredArticles.length === 0">
+      <p>No featured articles available at the moment.</p>
+    </div>
+  </section>
+
+  <!-- Recent Articles Section -->
+  <section class="section recent-section">
+    <div class="section-header">
+      <h2>Recent Articles</h2>
+      <a mat-button color="primary" routerLink="/articles">View All</a>
+    </div>
+
+    <div class="loading-container" *ngIf="isLoadingArticles">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <div class="error-container" *ngIf="articlesError && !isLoadingArticles">
+      <mat-icon color="warn">error</mat-icon>
+      <p>Failed to load articles. Please try again later.</p>
+    </div>
+
+    <div class="recent-articles" *ngIf="!isLoadingArticles && !articlesError && recentArticles.length > 0">
+      <mat-card class="recent-article-card" *ngFor="let article of recentArticles">
+        <div class="card-image-container" *ngIf="article.imagePath">
+          <img mat-card-image [src]="getImageUrl(article.imagePath)" [alt]="article.title">
+        </div>
+        <mat-card-content>
+          <div class="article-meta">
+            <span class="article-date">{{ article.createdAt | date }}</span>
+            <span class="article-category" *ngIf="article.categories && article.categories.length && article.categories.length > 0">
+              {{ article.categories[0].name }}
+            </span>
+          </div>
+          <h3 class="article-title">
+            <a [routerLink]="['/articles', article.id]">{{ article.title }}</a>
+          </h3>
+          <p class="article-excerpt">{{ getArticleExcerpt(article.content) }}</p>
+          <div class="article-author" *ngIf="article.author">
+            <span class="author-name">By {{ article.author.firstName }} {{ article.author.lastName }}</span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-button color="primary" [routerLink]="['/articles', article.id]">Read More</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoadingArticles && !articlesError && recentArticles.length === 0">
+      <p>No recent articles available at the moment.</p>
+    </div>
+  </section>
+
+  <!-- Popular Categories Section -->
+  <section class="section categories-section">
+    <div class="section-header">
+      <h2>Popular Categories</h2>
+      <a mat-button color="primary" routerLink="/categories">View All</a>
+    </div>
+
+    <div class="loading-container" *ngIf="isLoadingCategories">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <div class="error-container" *ngIf="categoriesError && !isLoadingCategories">
+      <mat-icon color="warn">error</mat-icon>
+      <p>Failed to load categories. Please try again later.</p>
+    </div>
+
+    <div class="categories-grid" *ngIf="!isLoadingCategories && !categoriesError && popularCategories.length > 0">
+      <mat-card class="category-card" *ngFor="let category of popularCategories">
+        <mat-card-content>
+          <h3 class="category-name">
+            <a [routerLink]="['/categories', category.id]">{{ category.name }}</a>
+          </h3>
+          <p class="category-description" *ngIf="category.description">{{ category.description }}</p>
+          <div class="category-count">
+            <mat-icon>article</mat-icon>
+            <span>{{ category.articleCount || 0 }} Articles</span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-button color="primary" [routerLink]="['/categories', category.id]">Browse</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoadingCategories && !categoriesError && popularCategories.length === 0">
+      <p>No categories available at the moment.</p>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="section cta-section">
+    <div class="cta-content">
+      <h2>Ready to share your story?</h2>
+      <p>Join our community and start writing your own articles today.</p>
+      <div class="cta-actions">
+        <a mat-raised-button color="primary" routerLink="/articles/create">Start Writing</a>
+        <a mat-stroked-button routerLink="/auth/register">Create Account</a>
+      </div>
+    </div>
+  </section>
+</div>

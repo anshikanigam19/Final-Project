@@ -1,0 +1,188 @@
+<div class="article-detail-container">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading article...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !isLoading">
+    <mat-icon color="warn">error</mat-icon>
+    <h2>Article Not Found</h2>
+    <p>The article you're looking for doesn't exist or has been removed.</p>
+    <div class="error-actions">
+      <button mat-raised-button color="primary" routerLink="/articles">
+        <mat-icon>list</mat-icon> Browse Articles
+      </button>
+      <button mat-stroked-button (click)="loadArticle(article?.id?.toString() || '')">
+        <mat-icon>refresh</mat-icon> Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Article Content -->
+  <div class="article-content" *ngIf="article && !isLoading && !error">
+    <!-- Article Header -->
+    <div class="article-header">
+      <div class="article-meta">
+        <span class="article-date">{{ formatDate(article.createdAt) }}</span>
+        <span class="article-category" *ngFor="let category of article.categories">
+          <a [routerLink]="['/articles']" [queryParams]="{category: category.id}">
+            {{ category.name }}
+          </a>
+        </span>
+      </div>
+
+      <h1 class="article-title">{{ article.title }}</h1>
+
+      <div class="article-author" *ngIf="article.author">
+        <span>By {{ article.author.firstName }} {{ article.author.lastName }}</span>
+      </div>
+
+      <!-- Article Actions for Author -->
+      <div class="article-actions" *ngIf="isArticleAuthor()">
+        <button mat-icon-button color="primary" (click)="editArticle()" matTooltip="Edit Article">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteArticle()" matTooltip="Delete Article">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Article Featured Image -->
+    <div class="article-image" *ngIf="article.imagePath">
+      <img [src]="getImageUrl(article.imagePath)" [alt]="article.title">
+    </div>
+
+    <!-- Article Body -->
+    <div class="article-body">
+      <div [innerHTML]="article.content"></div>
+    </div>
+
+    <!-- Article Tags -->
+    <div class="article-tags" *ngIf="article.categories && article.categories.length > 0">
+      <h3>Categories</h3>
+      <div class="tags-list">
+        <a mat-chip-option 
+           *ngFor="let category of article.categories"
+           [routerLink]="['/articles']" 
+           [queryParams]="{category: category.id}">
+          {{ category.name }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      <h2>Comments ({{ comments.length }})</h2>
+
+      <!-- Add Comment Form -->
+      <div class="comment-form-container" *ngIf="currentUser; else loginToComment">
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()" class="comment-form">
+          <mat-form-field appearance="outline" class="comment-input">
+            <mat-label>Add a comment</mat-label>
+            <textarea matInput 
+                      formControlName="content" 
+                      placeholder="Share your thoughts..."
+                      rows="3"></textarea>
+            <mat-error *ngIf="commentForm.get('content')?.hasError('required')">
+              Comment cannot be empty
+            </mat-error>
+            <mat-error *ngIf="commentForm.get('content')?.hasError('minlength')">
+              Comment must be at least 3 characters
+            </mat-error>
+            <mat-error *ngIf="commentForm.get('content')?.hasError('maxlength')">
+              Comment cannot exceed 1000 characters
+            </mat-error>
+          </mat-form-field>
+          <div class="comment-form-actions">
+            <button mat-raised-button 
+                    color="primary" 
+                    type="submit" 
+                    [disabled]="commentForm.invalid || isSubmittingComment">
+              <mat-spinner diameter="20" *ngIf="isSubmittingComment"></mat-spinner>
+              <span *ngIf="!isSubmittingComment">Post Comment</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <ng-template #loginToComment>
+        <div class="login-to-comment">
+          <p>Please <a routerLink="/auth/login">log in</a> to post a comment.</p>
+        </div>
+      </ng-template>
+
+      <!-- Comments List -->
+      <div class="comments-list-container">
+        <div class="loading-comments" *ngIf="isLoadingComments">
+          <mat-spinner diameter="30"></mat-spinner>
+          <span>Loading comments...</span>
+        </div>
+
+        <div class="empty-comments" *ngIf="!isLoadingComments && comments.length === 0">
+          <p>No comments yet. Be the first to share your thoughts!</p>
+        </div>
+
+        <div class="comments-list" *ngIf="!isLoadingComments && comments.length > 0">
+          <mat-card class="comment-card" *ngFor="let comment of comments">
+            <mat-card-header>
+              <div mat-card-avatar class="comment-avatar">
+                <mat-icon>account_circle</mat-icon>
+              </div>
+              <mat-card-title>
+                {{ comment.user?.firstName }} {{ comment.user?.lastName }}
+              </mat-card-title>
+              <mat-card-subtitle>
+                {{ comment.createdAt | date:'medium' }}
+              </mat-card-subtitle>
+              <div class="comment-actions" *ngIf="isCommentAuthor(comment)">
+                <button mat-icon-button color="primary" (click)="editComment(comment)" matTooltip="Edit Comment">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteComment(comment.id)" matTooltip="Delete Comment">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="comment-content" *ngIf="editingCommentId !== comment.id">{{ comment.content }}</p>
+              
+              <form *ngIf="editingCommentId === comment.id" [formGroup]="editCommentForm" (ngSubmit)="onSubmitEditComment(comment.id)" class="edit-comment-form">
+                <mat-form-field appearance="outline" class="comment-input">
+                  <mat-label>Edit comment</mat-label>
+                  <textarea matInput 
+                            formControlName="content" 
+                            placeholder="Edit your comment..."
+                            rows="3"></textarea>
+                  <mat-error *ngIf="editCommentForm.get('content')?.hasError('required')">
+                    Comment cannot be empty
+                  </mat-error>
+                  <mat-error *ngIf="editCommentForm.get('content')?.hasError('minlength')">
+                    Comment must be at least 3 characters
+                  </mat-error>
+                  <mat-error *ngIf="editCommentForm.get('content')?.hasError('maxlength')">
+                    Comment cannot exceed 1000 characters
+                  </mat-error>
+                </mat-form-field>
+                <div class="edit-comment-form-actions">
+                  <button mat-button type="button" (click)="cancelEditComment()">
+                    Cancel
+                  </button>
+                  <button mat-raised-button 
+                          color="primary" 
+                          type="submit" 
+                          [disabled]="editCommentForm.invalid || isSubmittingEditComment">
+                    <mat-spinner diameter="20" *ngIf="isSubmittingEditComment"></mat-spinner>
+                    <span *ngIf="!isSubmittingEditComment">Update</span>
+                  </button>
+                </div>
+              </form>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

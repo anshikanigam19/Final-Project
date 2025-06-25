@@ -1,0 +1,95 @@
+<div class="search-results-container">
+  <div class="search-header">
+    <h1>Search Results</h1>
+    <p *ngIf="searchQuery" class="search-query">Results for: <span>"{{ searchQuery }}"</span></p>
+  </div>
+
+  <!-- No Search Query -->
+  <div class="empty-search" *ngIf="!searchQuery && !isLoading">
+    <mat-icon>search</mat-icon>
+    <p>Enter a search term to find articles.</p>
+  </div>
+
+  <!-- Search Validation Error -->
+  <div class="validation-error" *ngIf="searchValidationError && !isLoading">
+    <mat-icon color="warn">error_outline</mat-icon>
+    <p>{{ searchValidationError }}</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Searching for articles...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !isLoading">
+    <mat-icon color="warn">error</mat-icon>
+    <p>Failed to load search results. Please try again later.</p>
+    <button mat-raised-button color="primary" (click)="searchArticles()">
+      <mat-icon>refresh</mat-icon> Retry
+    </button>
+  </div>
+
+  <!-- No Results -->
+  <div class="no-results" *ngIf="searchQuery && !searchValidationError && !isLoading && !error && articles.length === 0">
+    <mat-icon>sentiment_dissatisfied</mat-icon>
+    <p>No articles found matching "{{ searchQuery }}".</p>
+    <p>Try using different keywords or check your spelling.</p>
+  </div>
+
+  <!-- Results List -->
+  <div class="results-list" *ngIf="!isLoading && !error && articles.length > 0">
+    <p class="results-count">Found {{ totalArticles }} article{{ totalArticles !== 1 ? 's' : '' }}</p>
+    
+    <mat-card class="article-card" *ngFor="let article of articles">
+      <div class="article-image" *ngIf="article.imagePath">
+        <img [src]="getImageUrl(article.imagePath)" [alt]="article.title">
+      </div>
+      <mat-card-content>
+        <div class="article-meta">
+          <span class="article-date">
+            <mat-icon>calendar_today</mat-icon>
+            {{ article.createdAt | date:'mediumDate' }}
+          </span>
+          <span class="article-category" *ngIf="article.categories && article.categories.length > 0">
+            <mat-icon>label</mat-icon>
+            {{ article.categories[0].name }}
+            <span *ngIf="article.categories.length > 1">+{{ article.categories.length - 1 }}</span>
+          </span>
+        </div>
+        <h3 class="article-title">
+          <a [routerLink]="['/articles', article.id]" [innerHTML]="highlightMatchingText(article.title)"></a>
+        </h3>
+        <p class="article-excerpt" [innerHTML]="highlightMatchingText(getArticleExcerpt(article.content))">
+        </p>
+        <div class="article-footer">
+          <div class="article-author" *ngIf="article.author">
+            <mat-icon>person</mat-icon>
+            <span>{{ article.author.firstName }} {{ article.author.lastName }}</span>
+          </div>
+          <div class="article-comments">
+            <mat-icon>comment</mat-icon>
+            <span>{{ article.commentCount || 0 }} Comments</span>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button color="primary" [routerLink]="['/articles', article.id]">
+          <mat-icon>visibility</mat-icon> Read More
+        </a>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Pagination -->
+    <mat-paginator 
+      *ngIf="totalArticles > 0"
+      [length]="totalArticles"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="currentPage - 1"
+      (page)="onPageChange($event)"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
+</div>

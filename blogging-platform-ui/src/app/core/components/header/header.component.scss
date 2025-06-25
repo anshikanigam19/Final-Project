@@ -1,0 +1,116 @@
+.header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+}
+
+.logo-section {
+  flex: 0 0 auto;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.search-section {
+  flex: 1 1 auto;
+  max-width: 400px;
+  margin: 0 20px;
+}
+
+.search-form {
+  width: 100%;
+}
+
+.search-field {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+::ng-deep .search-field .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
+}
+
+.nav-section {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.auth-section {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.user-menu-button {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .header-container {
+    flex-wrap: wrap;
+  }
+  
+  .search-section {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 8px 0;
+  }
+  
+  .nav-section {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    font-size: 1.2rem;
+  }
+  
+  .nav-section a, .auth-section a, .auth-section button {
+    min-width: 0;
+    padding: 0 8px;
+  }
+  
+  .nav-section a span, .auth-section a span {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 0 8px;
+  }
+  
+  .logo-text {
+    font-size: 1rem;
+  }
+}

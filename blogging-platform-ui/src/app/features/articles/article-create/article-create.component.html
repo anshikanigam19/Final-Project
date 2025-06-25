@@ -1,0 +1,101 @@
+<div class="article-create-container">
+  <div class="article-create-header">
+    <h1>Create New Article</h1>
+    <div class="article-create-actions">
+      <button mat-stroked-button (click)="onCancel()">
+        <mat-icon>close</mat-icon> Cancel
+      </button>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="articleForm.invalid || isLoading">
+        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+        <span *ngIf="!isLoading"><mat-icon>save</mat-icon> Publish</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="article-create-form">
+    <form [formGroup]="articleForm">
+      <!-- Title Field -->
+      <mat-form-field appearance="outline" class="form-field-full-width">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" placeholder="Enter article title" required>
+        <mat-error *ngIf="articleForm.get('title')?.hasError('required')">
+          Title is required
+        </mat-error>
+        <mat-error *ngIf="articleForm.get('title')?.hasError('minlength')">
+          Title must be at least 5 characters long
+        </mat-error>
+        <mat-error *ngIf="articleForm.get('title')?.hasError('maxlength')">
+          Title cannot exceed 100 characters
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Categories Field -->
+      <mat-form-field appearance="outline" class="form-field-full-width">
+        <mat-label>Categories</mat-label>
+        <mat-select formControlName="categoryIds" multiple required>
+          <mat-option *ngIf="isLoadingCategories" disabled>
+            <mat-spinner diameter="20"></mat-spinner> Loading categories...
+          </mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="articleForm.get('categoryIds')?.hasError('required')">
+          Please select at least one category
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Image Upload Field (Optional) -->
+      <div class="image-upload-container">
+        <label class="image-upload-label">Featured Image (Optional)</label>
+        <div class="image-upload-field">
+          <button type="button" mat-stroked-button (click)="fileInput.click()">
+            <mat-icon>cloud_upload</mat-icon> Choose Image
+          </button>
+          <span class="file-name" *ngIf="selectedImageFile">{{ selectedImageFile.name }}</span>
+          <button *ngIf="selectedImageFile" type="button" mat-icon-button color="warn" (click)="removeSelectedImage()">
+            <mat-icon>close</mat-icon>
+          </button>
+          <input hidden type="file" #fileInput (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <mat-hint>Upload an image that represents your article (max 5MB)</mat-hint>
+        <div *ngIf="imageError" class="image-error">
+          <mat-error>{{ imageError }}</mat-error>
+        </div>
+        <div *ngIf="selectedImageFile && imagePreview" class="image-preview">
+          <img [src]="imagePreview" alt="Preview">
+        </div>
+      </div>
+
+      <!-- Content Field with Rich Text Editor -->
+      <div class="editor-container">
+        <label class="editor-label">Content <span class="required-indicator">*</span></label>
+        <editor
+          formControlName="content"
+          [init]="editorConfig"
+          [apiKey]="tinymceApiKey"
+          placeholder="Write your article content here..."
+        ></editor>
+        <div class="editor-error" *ngIf="articleForm.get('content')?.invalid && articleForm.get('content')?.touched">
+          <mat-error *ngIf="articleForm.get('content')?.hasError('required')">
+            Content is required
+          </mat-error>
+          <mat-error *ngIf="articleForm.get('content')?.hasError('minlength')">
+            Content must be at least 50 characters long
+          </mat-error>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button mat-stroked-button (click)="onCancel()">
+          Cancel
+        </button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="articleForm.invalid || isLoading">
+          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+          <span *ngIf="!isLoading">Publish Article</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

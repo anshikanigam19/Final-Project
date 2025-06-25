@@ -1,0 +1,131 @@
+<div class="category-detail-container">
+  <!-- Category Header -->
+  <div class="category-header" *ngIf="!isLoadingCategory && !categoryError && category">
+    <div class="category-icon">
+      <mat-icon>label</mat-icon>
+    </div>
+    <h1>{{ category.name }}</h1>
+    <p class="category-description" *ngIf="category.description">
+      {{ category.description }}
+    </p>
+    <div class="category-meta">
+      <span class="article-count">
+        <mat-icon>article</mat-icon>
+        {{ totalArticles }} Articles
+      </span>
+    </div>
+  </div>
+
+  <!-- Loading States -->
+  <div class="loading-container" *ngIf="isLoadingCategory">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading category...</p>
+  </div>
+
+  <div class="error-container" *ngIf="categoryError && !isLoadingCategory">
+    <mat-icon color="warn">error</mat-icon>
+    <p>Failed to load category. Please try again later.</p>
+    <ng-container *ngIf="category">
+      <button mat-raised-button color="primary" (click)="loadCategory(category.id.toString())">
+        <mat-icon>refresh</mat-icon> Retry
+      </button>
+    </ng-container>
+    <ng-container *ngIf="!category">
+      <button mat-raised-button color="primary" (click)="loadCategory('')">
+        <mat-icon>refresh</mat-icon> Retry
+      </button>
+    </ng-container>
+  </div>
+
+  <!-- Articles Section -->
+  <div class="articles-section" *ngIf="!isLoadingCategory && !categoryError && category">
+    <h2>Articles in this category</h2>
+
+    <!-- Articles Loading -->
+    <div class="loading-container" *ngIf="isLoadingArticles">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading articles...</p>
+    </div>
+
+    <!-- Articles Error -->
+    <div class="error-container" *ngIf="articlesError && !isLoadingArticles">
+      <mat-icon color="warn">error</mat-icon>
+      <p>Failed to load articles. Please try again later.</p>
+      <ng-container *ngIf="category">
+        <button mat-raised-button color="primary" (click)="loadArticles(category.id.toString())">
+          <mat-icon>refresh</mat-icon> Retry
+        </button>
+      </ng-container>
+      <ng-container *ngIf="!category">
+        <button mat-raised-button color="primary" (click)="loadArticles('')">
+          <mat-icon>refresh</mat-icon> Retry
+        </button>
+      </ng-container>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!isLoadingArticles && !articlesError && articles.length === 0">
+      <mat-icon>article</mat-icon>
+      <p>No articles in this category yet.</p>
+      <a mat-raised-button color="primary" routerLink="/articles/create">
+        <mat-icon>add</mat-icon> Create Article
+      </a>
+    </div>
+
+    <!-- Articles List -->
+    <div class="articles-list" *ngIf="!isLoadingArticles && !articlesError && articles.length > 0">
+      <mat-card class="article-card" *ngFor="let article of articles">
+        <div class="article-image" *ngIf="article.imagePath">
+          <img [src]="article.imagePath" [alt]="article.title">
+        </div>
+        <mat-card-content>
+          <div class="article-meta">
+            <span class="article-date">
+              <mat-icon>calendar_today</mat-icon>
+              {{ article.createdAt | date:'mediumDate' }}
+            </span>
+          </div>
+          <h3 class="article-title">
+            <a [routerLink]="['/articles', article.id]">{{ article.title }}</a>
+          </h3>
+          <p class="article-excerpt">
+            {{ getArticleExcerpt(article.content) }}
+          </p>
+          <div class="article-footer">
+            <div class="article-author" *ngIf="article.author">
+              <mat-icon>person</mat-icon>
+              <span>{{ article.author.firstName }} {{ article.author.lastName }}</span>
+            </div>
+            <div class="article-comments">
+              <mat-icon>comment</mat-icon>
+              <span>{{ article.commentCount || 0 }} Comments</span>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-button color="primary" [routerLink]="['/articles', article.id]">
+            <mat-icon>visibility</mat-icon> Read More
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator 
+      *ngIf="!isLoadingArticles && !articlesError && totalArticles > 0"
+      [length]="totalArticles"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [pageIndex]="currentPage - 1"
+      (page)="onPageChange($event)"
+      aria-label="Select page">
+    </mat-paginator>
+  </div>
+
+  <!-- Back to Categories -->
+  <div class="back-link">
+    <a mat-button routerLink="/categories">
+      <mat-icon>arrow_back</mat-icon> Back to Categories
+    </a>
+  </div>
+</div>

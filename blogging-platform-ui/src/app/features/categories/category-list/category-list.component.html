@@ -1,0 +1,52 @@
+<div class="category-list-container">
+  <div class="category-list-header">
+    <h1>Categories</h1>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading categories...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-container" *ngIf="error && !isLoading">
+    <mat-icon color="warn">error</mat-icon>
+    <p>Failed to load categories. Please try again later.</p>
+    <button mat-raised-button color="primary" (click)="loadCategories()">
+      <mat-icon>refresh</mat-icon> Retry
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && !error && categories.length === 0">
+    <mat-icon>category</mat-icon>
+    <p>No categories available at the moment.</p>
+  </div>
+
+  <!-- Categories Grid -->
+  <div class="categories-grid" *ngIf="!isLoading && !error && categories.length > 0">
+    <mat-card class="category-card" *ngFor="let category of categories">
+      <mat-card-content>
+        <div class="category-icon">
+          <mat-icon>label</mat-icon>
+        </div>
+        <h2 class="category-name">
+          <a [routerLink]="['/articles']" [queryParams]="{category: category.id}">{{ category.name }}</a>
+        </h2>
+        <p class="category-description" *ngIf="category.description">
+          {{ category.description }}
+        </p>
+        <div class="category-count">
+          <mat-icon>article</mat-icon>
+          <span>{{ category.articleCount || 0 }} Articles</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-button color="primary" [routerLink]="['/articles']" [queryParams]="{category: category.id}">
+          <mat-icon>visibility</mat-icon> View Articles
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

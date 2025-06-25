@@ -1,0 +1,724 @@
+-- Insert sample users
+INSERT INTO [dbo].[Users] (FirstName, LastName, Email, PasswordHash, CreatedAt, LastLogin)
+VALUES 
+('John', 'Doe', 'john.doe@example.com', 'AQAAAAEAACcQAAAAEHxSfbQAWmQXNJdo0hUJMgxgZxZUqQh9iU4Dq9CzVmGhpqKNIzHfcjcXq9v/uRTZYw==', '2023-01-15', '2023-06-10'),
+('Jane', 'Smith', 'jane.smith@example.com', 'AQAAAAEAACcQAAAAEJmUm9A7zEhYhJeYKJXnr1YSwfQ9L1V5T6hUJ97KwmCaBmJzm+CuaYOxPNh4Y+qKrA==', '2023-01-20', '2023-06-12'),
+('Michael', 'Johnson', 'michael.j@example.com', 'AQAAAAEAACcQAAAAEBsSKHXjTvpqrMIgbxLfPNNZkQnHaAUxXHHUVOBPFZZhyqOvVhvpW0jLILzO/+Xc3Q==', '2023-02-01', '2023-06-09'),
+('Emily', 'Williams', 'emily.w@example.com', 'AQAAAAEAACcQAAAAEAkjkSKPE3BpBRdSVxQJiw1LmJgQQOUk4Kq3UYhUGGdXjXl7rCLBMxQQTkVYnvTgdA==', '2023-02-15', '2023-06-11'),
+('David', 'Brown', 'david.b@example.com', 'AQAAAAEAACcQAAAAELODzD9iU7JbBJsj2BJLWFUXVCDSbBbEih2cZcJFQqK3Bm/NOKgUiCJPDqn0XnLZmQ==', '2023-03-01', '2023-06-08'),
+('Sarah', 'Miller', 'sarah.m@example.com', 'AQAAAAEAACcQAAAAEPgxLP9TmELHZFCDpKIwDCNFfTVoHXnUOtG9PnJVoqPUVy8ntKs+uJAJgCnxGYnNrA==', '2023-03-15', '2023-06-07');
+
+
+-- Insert article categories
+INSERT INTO [dbo].[Categories] (Name, Description)
+VALUES 
+('Technology', 'Articles about software development, gadgets, and tech trends'),
+('Travel', 'Experiences, tips, and guides for travelers around the world'),
+('Food', 'Recipes, restaurant reviews, and culinary experiences'),
+('Health & Fitness', 'Tips for staying healthy, workout routines, and wellness advice'),
+('Personal Development', 'Self-improvement, productivity, and life skills'),
+('Business', 'Entrepreneurship, marketing, and business strategies'),
+('Science', 'Latest discoveries, research, and scientific explanations'),
+('Art & Design', 'Creative works, design principles, and artistic inspiration');
+
+
+-- Insert sample articles
+USE [BlogDb];
+GO
+
+INSERT INTO [dbo].[Articles]
+    (Title, Content, CreatedAt, UpdatedAt, ImagePath, AuthorId)
+VALUES
+    -- 1
+    ('Getting Started with Angular',
+     '<p>Angular is a platform for building mobile and desktop web applications. In this article, we will explore the basics of Angular and how to set up your first project.</p>
+      <h2>Prerequisites</h2>
+      <p>Before we begin, make sure you have Node.js installed on your machine. You can download it from the official website.</p>
+      <h2>Setting Up</h2>
+      <p>First, install the Angular CLI globally by running the following command:</p>
+      <pre><code>npm install -g @angular/cli</code></pre>
+      <p>Now, create a new Angular project:</p>
+      <pre><code>ng new my-app</code></pre>
+      <p>Navigate to the project directory and start the development server:</p>
+      <pre><code>cd my-app
+ng serve</code></pre>
+      <p>Open your browser and navigate to <a href="http://localhost:4200/">http://localhost:4200/</a> to see your application running.</p>',
+     '2023-04-01', '2023-04-01', '/uploads/images/angular-intro.jpg', 1),
+    -- 2
+    ('The Ultimate Guide to ASP.NET Core',
+     '<p>ASP.NET Core is a cross-platform, high-performance framework for building modern, cloud-based, Internet-connected applications. In this comprehensive guide, we will dive deep into ASP.NET Core and explore its features.</p>
+      <h2>What is ASP.NET Core?</h2>
+      <p>ASP.NET Core is an open-source and cross-platform framework for building modern cloud-based web applications on Windows, Mac, or Linux.</p>
+      <h2>Key Features</h2>
+      <ul>
+        <li>Cross-platform</li>
+        <li>High performance</li>
+        <li>Dependency injection</li>
+        <li>Lightweight and modular</li>
+      </ul>
+      <h2>Getting Started</h2>
+      <p>To create a new ASP.NET Core project, you can use the .NET CLI:</p>
+      <pre><code>dotnet new webapp -o MyWebApp</code></pre>
+      <p>Navigate to the project directory and run the application:</p>
+      <pre><code>cd MyWebApp
+dotnet run</code></pre>',
+     '2023-04-05', '2023-04-06', '/uploads/images/aspnet-core.jpg', 1),
+    -- 3
+    ('Exploring the Amalfi Coast',
+     '<p>The Amalfi Coast is a stunning stretch of coastline in southern Italy. With its picturesque towns, crystal-clear waters, and delicious cuisine, it''s a must-visit destination for any traveler.</p>
+      <h2>Best Time to Visit</h2>
+      <p>The best time to visit the Amalfi Coast is during the spring (April to June) or fall (September to October) when the weather is pleasant and the crowds are smaller.</p>
+      <h2>Must-Visit Towns</h2>
+      <h3>Positano</h3>
+      <p>Known for its colorful buildings cascading down to the sea, Positano is one of the most photogenic spots on the coast.</p>
+      <h3>Amalfi</h3>
+      <p>The town that gives the coast its name, Amalfi has a beautiful cathedral and a charming main square.</p>
+      <h3>Ravello</h3>
+      <p>Perched high above the sea, Ravello offers stunning views and beautiful gardens.</p>',
+     '2023-04-10', '2023-04-10', '/uploads/images/amalfi-coast.jpg', 3),
+    -- 4
+    ('Healthy Mediterranean Diet Recipes',
+     '<p>The Mediterranean diet is not only delicious but also one of the healthiest ways to eat. Here are some simple recipes to incorporate into your meal plan.</p>
+      <h2>Greek Salad</h2>
+      <p><strong>Ingredients:</strong></p>
+      <ul>
+        <li>2 large tomatoes, chopped</li>
+        <li>1 cucumber, sliced</li>
+        <li>1 red onion, thinly sliced</li>
+        <li>1 green bell pepper, chopped</li>
+        <li>200g feta cheese, cubed</li>
+        <li>100g kalamata olives</li>
+        <li>2 tbsp extra virgin olive oil</li>
+        <li>1 tbsp red wine vinegar</li>
+        <li>1 tsp dried oregano</li>
+        <li>Salt and pepper to taste</li>
+      </ul>
+      <p><strong>Instructions:</strong></p>
+      <ol>
+        <li>Combine all vegetables in a large bowl.</li>
+        <li>Add feta cheese and olives.</li>
+        <li>In a small bowl, whisk together olive oil, vinegar, oregano, salt, and pepper.</li>
+        <li>Pour dressing over the salad and toss gently.</li>
+      </ol>',
+     '2023-04-15', '2023-04-16', '/uploads/images/mediterranean-food.jpg', 4),
+    -- 5
+    ('Cybersecurity Best Practices for Small Businesses',
+     '<p>Small businesses are increasingly becoming targets for cyberattacks. This article outlines essential cybersecurity practices to protect your business.</p>
+      <h2>Why Small Businesses Are Targeted</h2>
+      <p>Cybercriminals often target small businesses because they typically have weaker security measures compared to larger corporations but still possess valuable data.</p>
+      <h2>Essential Security Measures</h2>
+      <h3>1. Use Strong, Unique Passwords</h3>
+      <p>Implement a password policy that requires employees to use strong, unique passwords for all business accounts. Consider using a password manager.</p>
+      <h3>2. Enable Two-Factor Authentication</h3>
+      <p>Two-factor authentication adds an extra layer of security by requiring a second form of verification beyond just a password.</p>
+      <h3>3. Regular Software Updates</h3>
+      <p>Keep all software, including operating systems and applications, updated with the latest security patches.</p>
+      <h3>4. Employee Training</h3>
+      <p>Educate employees about phishing attacks, safe browsing habits, and how to identify potential security threats.</p>',
+     '2023-04-20', '2023-04-21', '/uploads/images/cybersecurity.jpg', 5),
+    -- 6
+    ('Minimalist Living: Less Stuff, More Joy',
+     '<p>Embracing minimalism can lead to reduced stress, more financial freedom, and increased happiness. This article explores how to start your minimalist journey.</p>
+      <h2>What is Minimalism?</h2>
+      <p>Minimalism is not about living with nothing, but rather about being intentional with what you choose to have in your life. It''s about living with less—fewer material possessions, less debt, less stress, less distraction.</p>
+      <h2>Benefits of Minimalist Living</h2>
+      <ul>
+        <li>Reduced stress and anxiety</li>
+        <li>More financial freedom</li>
+        <li>Environmental benefits</li>
+        <li>More time for what matters</li>
+        <li>Increased focus and productivity</li>
+      </ul>
+      <h2>Getting Started</h2>
+      <h3>1. Start Small</h3>
+      <p>Begin with one area of your home, like a drawer or closet. Sort items into keep, donate, and discard piles.</p>
+      <h3>2. Ask the Right Questions</h3>
+      <p>When deciding what to keep, ask yourself: Do I use this regularly? Does it add value to my life? Would I buy it again?</p>',
+     '2023-04-25', '2023-04-25', '/uploads/images/minimalist-living.jpg', 6),
+    -- 7
+    ('Introduction to Machine Learning with Python',
+     '<p>Machine Learning is revolutionizing industries across the globe. This tutorial will introduce you to the basics of machine learning using Python.</p>
+      <h2>What is Machine Learning?</h2>
+      <p>Machine Learning is a subset of artificial intelligence that enables computers to learn from data without being explicitly programmed.</p>
+      <h2>Setting Up Your Environment</h2>
+      <p>First, you''ll need to install Python and some essential libraries:</p>
+      <pre><code>pip install numpy pandas scikit-learn matplotlib</code></pre>
+      <h2>Your First Machine Learning Model</h2>
+      <p>Let''s create a simple classification model using the Iris dataset:</p>
+      <pre><code>from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
+# Load dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Create and train model
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+
+# Evaluate model
+accuracy = model.score(X_test, y_test)
+print(f''Accuracy: {accuracy:.2f}'')</code></pre>',
+     '2023-05-01', '2023-05-02', '/uploads/images/machine-learning.jpg', 1),
+    -- 8
+    ('The Art of Landscape Photography',
+     '<p>Landscape photography is about capturing the beauty of the natural world. This guide will help you improve your landscape photography skills.</p>
+      <h2>Essential Equipment</h2>
+      <ul>
+        <li>A camera with manual controls</li>
+        <li>Wide-angle lens</li>
+        <li>Tripod</li>
+        <li>Neutral density filters</li>
+        <li>Remote shutter release</li>
+      </ul>
+      <h2>Composition Techniques</h2>
+      <h3>The Rule of Thirds</h3>
+      <p>Divide your frame into thirds both horizontally and vertically. Place key elements along these lines or at their intersections.</p>
+      <h3>Leading Lines</h3>
+      <p>Use natural lines like rivers, roads, or fences to lead the viewer''s eye through the image.</p>
+      <h3>Foreground Interest</h3>
+      <p>Include interesting elements in the foreground to create depth in your images.</p>
+      <h2>Best Times to Shoot</h2>
+      <p>The golden hours—shortly after sunrise and before sunset—provide soft, warm light that enhances landscape photos.</p>',
+     '2023-05-05', '2023-05-06', '/uploads/images/landscape-photography.jpg', 3),
+    -- 9
+    ('Building Resilience in Challenging Times',
+     '<p>Resilience is the ability to adapt and bounce back when things don''t go as planned. Learn how to build this essential skill for navigating life''s challenges.</p>
+      <h2>What is Resilience?</h2>
+      <p>Resilience is not about avoiding stress or hardship, but developing healthy ways to cope with challenges and setbacks.</p>
+      <h2>Key Components of Resilience</h2>
+      <h3>1. Developing a Growth Mindset</h3>
+      <p>See challenges as opportunities to learn and grow rather than insurmountable obstacles.</p>
+      <h3>2. Building Strong Connections</h3>
+      <p>Maintain positive relationships with family, friends, and colleagues who can provide support during difficult times.</p>
+      <h3>3. Practicing Self-Care</h3>
+      <p>Take care of your physical and mental health through regular exercise, adequate sleep, and stress management techniques.</p>
+      <h3>4. Finding Purpose</h3>
+      <p>Connect with something larger than yourself, whether through volunteering, spiritual practice, or meaningful work.</p>',
+     '2023-05-10', '2023-05-11', '/uploads/images/resilience.jpg', 6),
+    -- 10
+    ('Sustainable Business Practices for the Modern Company',
+     '<p>Implementing sustainable practices is not just good for the planet—it''s good for business. This article explores how companies can become more sustainable.</p>
+      <h2>The Business Case for Sustainability</h2>
+      <p>Sustainable practices can lead to cost savings, improved brand reputation, increased customer loyalty, and better employee retention.</p>
+      <h2>Key Areas for Implementation</h2>
+      <h3>Energy Efficiency</h3>
+      <p>Audit your energy use and implement efficiency measures like LED lighting, smart thermostats, and energy-efficient equipment.</p>
+      <h3>Waste Reduction</h3>
+      <p>Implement recycling programs, reduce packaging, and find ways to reuse materials in your operations.</p>
+      <h3>Sustainable Supply Chain</h3>
+      <p>Work with suppliers who share your commitment to sustainability and set environmental standards for your procurement process.</p>
+      <h3>Remote Work Options</h3>
+      <p>Reduce commuting emissions by offering flexible work arrangements when possible.</p>',
+     '2023-05-15', '2023-05-16', '/uploads/images/sustainable-business.jpg', 2);
+
+
+-- Link articles to categories
+INSERT INTO [dbo].[ArticleCategories] (ArticleId, CategoryId)
+VALUES
+(1, 1), -- Getting Started with Angular -> Technology
+(2, 1), -- The Ultimate Guide to ASP.NET Core -> Technology
+(3, 2), -- Exploring the Amalfi Coast -> Travel
+(4, 3), -- Healthy Mediterranean Diet Recipes -> Food
+(4, 4), -- Healthy Mediterranean Diet Recipes -> Health & Fitness
+(5, 1), -- Cybersecurity Best Practices -> Technology
+(5, 6), -- Cybersecurity Best Practices -> Business
+(6, 5), -- Minimalist Living -> Personal Development
+(7, 1), -- Introduction to Machine Learning -> Technology
+(7, 7), -- Introduction to Machine Learning -> Science
+(8, 8), -- The Art of Landscape Photography -> Art & Design
+(8, 2), -- The Art of Landscape Photography -> Travel
+(9, 5), -- Building Resilience -> Personal Development
+(9, 4), -- Building Resilience -> Health & Fitness
+(10, 6), -- Sustainable Business Practices -> Business
+(10, 7); -- Sustainable Business Practices -> Science
+
+
+-- Insert comments on articles
+USE [BlogDb];
+GO
+
+INSERT INTO [dbo].[Comments] (Content, CreatedAt, ArticleId, UserId)
+VALUES
+  ('Great introduction to Angular! This helped me get started with my first project.', '2023-04-02', 1, 2),
+  ('I would add that using Angular Material can really speed up UI development.', '2023-04-03', 1, 5),
+  ('Thanks for the comprehensive guide! Do you have any recommendations for handling authentication in ASP.NET Core?', '2023-04-07', 2, 3),
+  ('I implemented these concepts in my project and it works perfectly. Thank you!', '2023-04-08', 2, 6),
+  ('I visited the Amalfi Coast last summer and it was absolutely breathtaking. Positano was my favorite town!', '2023-04-12', 3, 4),
+  ('Don''t forget to mention the amazing limoncello from this region!', '2023-04-13', 3, 2),
+  ('I tried the Greek salad recipe and it was delicious! Will definitely make it again.', '2023-04-17', 4, 1),
+  ('Would olive oil from any region work, or do you recommend specifically Greek olive oil?', '2023-04-18', 4, 3),
+  ('As someone working in IT security, I can confirm these are essential practices. I would also recommend regular security audits.', '2023-04-22', 5, 1),
+  ('Great article! We implemented these measures at our small business and it has made a huge difference.', '2023-04-23', 5, 2),
+  ('I started my minimalist journey last year and it has been life-changing. Less stuff really does mean more joy!', '2023-04-26', 6, 4),
+  ('Do you have any specific tips for minimizing digital clutter as well?', '2023-04-27', 6, 5),
+  ('This is a fantastic introduction to machine learning! The code examples are very clear.', '2023-05-03', 7, 2),
+  ('Would you recommend any specific resources for diving deeper into neural networks?', '2023-05-04', 7, 5),
+  ('Your tips on composition have really improved my landscape photography. Thank you!', '2025-05-07', 8, 6),
+  ('What camera settings do you typically use for sunset shots?', '2023-05-08', 8, 4),
+  ('I found the section on developing a growth mindset particularly helpful. It''s changed how I approach challenges.', '2023-05-12', 9, 3),
+  ('Building strong connections has been key to my own resilience. Great article!', '2023-05-13', 9, 1),
+  ('We''ve implemented several of these sustainable practices at our company and have seen both cost savings and improved employee morale.', '2023-05-17', 10, 4),
+  ('Do you have any recommendations for small businesses with limited budgets looking to become more sustainable?', '2023-05-18', 10, 3);
+GO
+
+
+
+-- Add more comments to articles
+USE [BlogDb];
+GO
+
+INSERT INTO [dbo].[Comments] (Content, CreatedAt, ArticleId, UserId)
+VALUES
+  ('I''ve been using Angular for years and still learned something new from this article!', '2023-05-20', 1, 3),
+  ('The section on dependency injection in ASP.NET Core was particularly helpful for my current project.', '2023-05-21', 2, 1),
+  ('I''m planning a trip to the Amalfi Coast next month. Any recommendations for accommodations?', '2023-05-22', 3, 6),
+  ('I added some fresh mint to the Greek salad and it was a great addition!', '2023-05-23', 4, 5),
+  ('Two-factor authentication has saved our company from several potential breaches. Cannot recommend it enough!', '2023-05-24', 5, 3),
+  ('I''ve been applying these minimalist principles to my workspace and it''s improved my productivity tremendously.', '2023-05-25', 6, 2),
+  ('How would you adapt this approach for time series data?', '2023-05-26', 7, 6),
+  ('Your tip about including foreground interest has transformed my landscape photos!', '2023-05-27', 8, 1),
+  ('I''ve shared this article with my team as we navigate some organizational changes. Very helpful!', '2023-05-28', 9, 5),
+  ('We''re looking into implementing a sustainable supply chain. Do you have any case studies you could share?', '2023-05-29', 10, 6);
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Insert sample users (password hash is for 'Password123!' using BCrypt)
+INSERT INTO [dbo].[Users] ([FirstName], [LastName], [Email], [PasswordHash], [CreatedAt], [LastLogin])
+VALUES
+('John', 'Doe', 'john.doe@example.com', '$2a$11$DP9aHzVMYbgFxKOJQXNJ9OUfCvzm9fqU4g/U0AFVT3KWvpVz0khS.', '2023-10-01', '2023-10-15'),
+('Jane', 'Smith', 'jane.smith@example.com', '$2a$11$DP9aHzVMYbgFxKOJQXNJ9OUfCvzm9fqU4g/U0AFVT3KWvpVz0khS.', '2023-10-02', '2023-10-14'),
+('Michael', 'Johnson', 'michael.johnson@example.com', '$2a$11$DP9aHzVMYbgFxKOJQXNJ9OUfCvzm9fqU4g/U0AFVT3KWvpVz0khS.', '2023-10-03', '2023-10-13'),
+('Emily', 'Williams', 'emily.williams@example.com', '$2a$11$DP9aHzVMYbgFxKOJQXNJ9OUfCvzm9fqU4g/U0AFVT3KWvpVz0khS.', '2023-10-04', '2023-10-12'),
+('David', 'Brown', 'david.brown@example.com', '$2a$11$DP9aHzVMYbgFxKOJQXNJ9OUfCvzm9fqU4g/U0AFVT3KWvpVz0khS.', '2023-10-05', '2023-10-11');
+
+
+
+INSERT INTO [dbo].[Categories] ([Name], [Description])
+VALUES
+('Technology', 'Articles about the latest tech trends, gadgets, and innovations'),
+('Travel', 'Explore destinations, travel tips, and adventures around the world'),
+('Food', 'Recipes, restaurant reviews, and culinary experiences'),
+('Health', 'Fitness tips, wellness advice, and healthy living'),
+('Business', 'Entrepreneurship, finance, and professional development'),
+('Science', 'Scientific discoveries, research, and breakthroughs'),
+('Arts', 'Visual arts, music, literature, and creative expression');
+
+
+
+
+USE [BlogDb];
+GO
+
+-- IMPORTANT: Before running this query, make sure you have placed the following files under wwwroot/uploads/images:
+--   ai-future.jpg
+--   thailand-beaches.jpg
+--   sourdough-bread.jpg
+--   meditation.jpg
+--   sustainable-business.jpg
+--   quantum-computing.jpg
+--   renaissance-art.jpg
+
+INSERT INTO [dbo].[Articles]
+    ([Title], [Content], [CreatedAt], [UpdatedAt], [ImagePath], [IsFeatured], [AuthorId])
+VALUES
+    (
+        'The Future of Artificial Intelligence',
+        '<p>Artificial Intelligence is transforming our world in ways we never imagined. From self-driving cars to advanced medical diagnostics, AI is revolutionizing industries and changing how we live and work.</p>
+         <p>Recent advancements in machine learning algorithms have enabled computers to perform tasks that once required human intelligence. Deep learning, a subset of machine learning, has particularly shown remarkable progress in image recognition, natural language processing, and decision-making capabilities.</p>
+         <p>As we look to the future, ethical considerations and responsible AI development will be crucial. Questions about privacy, bias, and the impact on employment will need thoughtful solutions as AI continues to evolve.</p>',
+        '2023-10-10', 
+        NULL, 
+        'uploads/images/ai-future.jpg', 
+        1, 
+        1
+    ),
+    (
+        'Exploring the Hidden Beaches of Thailand',
+        '<p>Thailand is known for its stunning beaches, but beyond the popular tourist destinations lie hidden gems waiting to be discovered.</p>
+         <p>From the secluded Railay Beach in Krabi to the pristine shores of Koh Lanta, these lesser-known paradises offer crystal-clear waters, soft white sand, and a peaceful atmosphere away from the crowds.</p>
+         <p>Local fishing villages nearby provide authentic Thai cuisine and a glimpse into traditional coastal life. The best time to visit is during the dry season from November to April when the weather is perfect for swimming and sunbathing.</p>',
+        '2023-10-11', 
+        NULL, 
+        'uploads/images/thailand-beaches.jpg', 
+        1, 
+        2
+    ),
+    (
+        'Mastering the Art of Sourdough Bread',
+        '<p>Sourdough bread has experienced a renaissance in recent years, with home bakers discovering the joy of creating naturally leavened loaves.</p>
+         <p>The process begins with a starter culture of flour and water, which captures wild yeast and beneficial bacteria from the environment. This living culture gives sourdough its distinctive tangy flavor and improved digestibility compared to commercial yeasted breads.</p>
+         <p>While it requires patience and practice, the reward of pulling a perfectly baked loaf from your oven makes the effort worthwhile. This article will guide you through creating and maintaining your starter and baking your first sourdough masterpiece.</p>',
+        '2023-10-12', 
+        '2023-10-13', 
+        'uploads/images/sourdough-bread.jpg', 
+        0, 
+        3
+    ),
+    (
+        'Mindfulness Meditation for Beginners',
+        '<p>In our fast-paced world, mindfulness meditation offers a path to greater peace and mental clarity. This ancient practice, now backed by modern science, can reduce stress, improve focus, and enhance overall well-being.</p>
+         <p>For beginners, starting with just five minutes of daily meditation can make a significant difference. Find a quiet space, sit comfortably, and focus on your breath. When your mind wanders, gently bring your attention back to your breathing without judgment.</p>
+         <p>With consistent practice, you''ll develop greater awareness of your thoughts and emotions, allowing you to respond to life''s challenges with more calm and intention.</p>',
+        '2023-10-13', 
+        NULL, 
+        'uploads/images/meditation.jpg', 
+        0, 
+        4
+    ),
+    (
+        'Sustainable Business Practices for the Modern Entrepreneur',
+        '<p>Today''s successful businesses recognize that sustainability isn''t just good for the planet—it''s good for profits too. Consumers increasingly support companies that demonstrate environmental and social responsibility.</p>
+         <p>Implementing sustainable practices can start small: reducing waste, conserving energy, or sourcing materials ethically. As your business grows, consider larger initiatives like carbon offset programs or renewable energy investments.</p>
+         <p>This article explores practical steps entrepreneurs can take to build sustainability into their business models from the ground up, creating value while making a positive impact on the world.</p>',
+        '2023-10-14', 
+        '2023-10-15', 
+        'uploads/images/sustainable-business.jpg', 
+        1, 
+        5
+    ),
+    (
+        'Breakthrough in Quantum Computing',
+        '<p>Scientists have achieved a significant milestone in quantum computing, developing a processor that can perform calculations in seconds that would take traditional supercomputers thousands of years.</p>
+         <p>This breakthrough utilizes quantum bits, or qubits, which can exist in multiple states simultaneously, allowing for parallel processing at an unprecedented scale. Potential applications include drug discovery, climate modeling, and cryptography.</p>
+         <p>While practical quantum computers for everyday use remain years away, this development marks a crucial step toward a new era of computing power that could solve some of humanity''s most complex problems.</p>',
+        '2023-10-15', 
+        NULL, 
+        'uploads/images/quantum-computing.jpg', 
+        0, 
+        1
+    ),
+    (
+        'Renaissance Art: A Modern Perspective',
+        '<p>The masterpieces of the Renaissance continue to captivate audiences centuries later, offering insights into both historical contexts and timeless human experiences.</p>
+         <p>Artists like Leonardo da Vinci, Michelangelo, and Raphael revolutionized techniques in perspective, anatomy, and composition, creating works that still define our understanding of artistic excellence.</p>
+         <p>This article examines how Renaissance art influences contemporary creative expression and why these works remain relevant in our digital age. By understanding the innovations of the past, today''s artists find new paths forward in their own creative journeys.</p>',
+        '2023-10-16', 
+        NULL, 
+        'uploads/images/renaissance-art.jpg', 
+        0, 
+        2
+    );
+GO
+
+
+INSERT INTO [dbo].[ArticleCategories] ([ArticleId], [CategoryId])
+VALUES
+(1, 1), -- The Future of AI - Technology
+(1, 6), -- The Future of AI - Science
+(2, 2), -- Exploring Thailand - Travel
+(3, 3), -- Sourdough Bread - Food
+(4, 4), -- Mindfulness Meditation - Health
+(5, 5), -- Sustainable Business - Business
+(6, 1), -- Quantum Computing - Technology
+(6, 6), -- Quantum Computing - Science
+(7, 7); -- Renaissance Art - Arts
+
+
+USE [BlogDb];
+GO
+
+INSERT INTO [dbo].[Comments] ([Content], [CreatedAt], [ArticleId], [UserId])
+VALUES
+    (
+        'This article really opened my eyes to the potential of AI. I wonder how it will affect jobs in the next decade.',
+        '2023-10-11',
+        1,
+        2
+    ),
+    (
+        'I''ve been following AI developments closely, and this is one of the best summaries I''ve read. Great work!',
+        '2023-10-12',
+        1,
+        3
+    ),
+    (
+        'I visited Railay Beach last year and it was exactly as described - absolute paradise! Can''t wait to go back.',
+        '2023-10-12',
+        2,
+        1
+    ),
+    (
+        'Thanks for the tips! Adding these beaches to my travel bucket list for next summer.',
+        '2023-10-13',
+        2,
+        4
+    ),
+    (
+        'I''ve been struggling with my sourdough starter. The troubleshooting section here was super helpful!',
+        '2023-10-13',
+        3,
+        5
+    ),
+    (
+        'Just tried this method and my bread turned out amazing! The crust was perfect.',
+        '2023-10-14',
+        3,
+        2
+    ),
+    (
+        'I''ve been practicing mindfulness for years and still found new insights in this article. Well done!',
+        '2023-10-14',
+        4,
+        3
+    ),
+    (
+        'Started meditating after reading this and already feeling more centered. Thank you!',
+        '2023-10-15',
+        4,
+        1
+    ),
+    (
+        'As a small business owner, I appreciate these practical sustainability tips that don''t break the bank.',
+        '2023-10-15',
+        5,
+        4
+    ),
+    (
+        'Implemented the waste reduction strategy mentioned here and it''s already saving us money. Win-win!',
+        '2023-10-16',
+        5,
+        2
+    ),
+    (
+        'The implications for cryptography are mind-blowing. Great explanation of complex concepts.',
+        '2023-10-16',
+        6,
+        5
+    ),
+    (
+        'I work in tech and still learned so much from this article. Quantum computing explained clearly!',
+        '2023-10-17',
+        6,
+        3
+    ),
+    (
+        'The connection you made between Renaissance techniques and modern digital art was fascinating.',
+        '2023-10-17',
+        7,
+        1
+    ),
+    (
+        'This inspired me to visit the local art museum and see some Renaissance works in person. Amazing experience!',
+        '2023-10-18',
+        7,
+        4
+    );
+GO
+
+
+

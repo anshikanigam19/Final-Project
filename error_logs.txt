@@ -1,0 +1,21 @@
+Issues to be fixed:
+- •	When clicking on profile error is coming
+implement profile 
+3 sections:
+comments posted by user
+posts created by user
+account section to change name, email, change password in profile
+
+Search functionality
+Search Results Validation: 
+o	Search results should be displayed in a user-friendly format.
+o	Matching titles and contents should be displayed.
+o	If no results are found, a "No results found" message should be displayed.
+o	The search results should highlight the portions of the title and excerpt that match the search query.(Optional)
+o	The search results should be relevant to the search query.
+
+
+in create post http://localhost:4200/articles/create
+i am not able to click dropdown to select category
+
+fix all

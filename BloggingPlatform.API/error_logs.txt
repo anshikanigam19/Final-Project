@@ -1,0 +1,25 @@
+[25-Jun-25 07:36:58 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 07:36:59 AM] Database initialized successfully.
+[25-Jun-25 07:38:10 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 07:38:11 AM] Database initialized successfully.
+[25-Jun-25 07:40:33 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 07:40:35 AM] Database initialized successfully.
+[25-Jun-25 07:44:31 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 07:44:32 AM] Database initialized successfully.
+[25-Jun-25 07:52:12 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 07:52:12 AM] Database initialized successfully.
+[25-Jun-25 07:56:55 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 07:56:55 AM] Database initialized successfully.
+[25-Jun-25 08:00:24 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 08:00:25 AM] Database initialized successfully.
+[25-Jun-25 08:00:48 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 08:00:49 AM] Database initialized successfully.
+[25-Jun-25 08:04:08 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 08:04:08 AM] Database initialized successfully.
+[25-Jun-25 08:11:10 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 08:11:11 AM] Database initialized successfully.
+[25-Jun-25 08:11:47 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 08:11:49 AM] Database initialized successfully.
+[25-Jun-25 08:46:26 AM] Migration error: An error was generated for warning 'Microsoft.EntityFrameworkCore.Migrations.PendingModelChangesWarning': The model for context 'ApplicationDbContext' has pending changes. Add a new migration before updating the database. This exception can be suppressed or logged by passing event ID 'RelationalEventId.PendingModelChangesWarning' to the 'ConfigureWarnings' method in 'DbContext.OnConfiguring' or 'AddDbContext'.
+[25-Jun-25 08:46:27 AM] Using database provider: Microsoft.EntityFrameworkCore.SqlServer
+[25-Jun-25 08:46:27 AM] Database initialized successfully.

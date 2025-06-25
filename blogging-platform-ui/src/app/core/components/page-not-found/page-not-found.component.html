@@ -1,0 +1,16 @@
+<div class="not-found-container">
+  <div class="not-found-content">
+    <h1 class="not-found-title">404</h1>
+    <h2 class="not-found-subtitle">Page Not Found</h2>
+    <p class="not-found-message">The page you are looking for doesn't exist or has been moved.</p>
+    
+    <div class="not-found-actions">
+      <button mat-raised-button color="primary" routerLink="/">
+        <mat-icon>home</mat-icon> Go to Home
+      </button>
+      <button mat-stroked-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon> Go Back
+      </button>
+    </div>
+  </div>
+</div>

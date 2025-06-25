@@ -1,0 +1,66 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <div class="container header-container">
+    <div class="logo-section">
+      <a routerLink="/" class="logo-link">
+        <span class="logo-text">Modern Blogging</span>
+      </a>
+    </div>
+
+    <div class="search-section">
+      <form (ngSubmit)="onSearch()" class="search-form">
+        <mat-form-field appearance="outline" class="search-field">
+          <input matInput placeholder="Search articles..." [(ngModel)]="searchQuery" name="searchQuery">
+          <button mat-icon-button matSuffix type="submit">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="nav-section">
+      <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon>home</mat-icon> Home
+      </a>
+      <a mat-button routerLink="/articles" routerLinkActive="active-link">
+        <mat-icon>article</mat-icon> Articles
+      </a>
+      <a mat-button routerLink="/categories" routerLinkActive="active-link">
+        <mat-icon>category</mat-icon> Categories
+      </a>
+    </div>
+
+    <div class="auth-section">
+      <ng-container *ngIf="!isAuthenticated; else userMenu">
+        <a mat-button routerLink="/auth/login" routerLinkActive="active-link">
+          <mat-icon>login</mat-icon> Login
+        </a>
+        <a mat-raised-button color="accent" routerLink="/auth/register" routerLinkActive="active-link">
+          <mat-icon>person_add</mat-icon> Register
+        </a>
+      </ng-container>
+
+      <ng-template #userMenu>
+        <a mat-button routerLink="/articles/create" routerLinkActive="active-link">
+          <mat-icon>add</mat-icon> New Article
+        </a>
+
+        <button mat-button [matMenuTriggerFor]="menu" class="user-menu-button">
+          <mat-icon>account_circle</mat-icon>
+          <span *ngIf="user">{{ user.firstName }}</span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <a mat-menu-item routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </a>
+          <button mat-menu-item (click)="onLogout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </ng-template>
+    </div>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,24 @@
+<mat-card class="article-card">
+  <div class="card-image-container" *ngIf="article.imagePath">
+    <img mat-card-image [src]="article.imagePath" [alt]="article.title">
+  </div>
+  <mat-card-content>
+    <div class="article-meta">
+      <span class="article-date">{{ article.createdAt | date }}</span>
+      <span class="article-category" *ngIf="article.categories && article.categories.length && article.categories.length > 0">
+        {{ article.categories[0].name }}
+      </span>
+    </div>
+    <h3 class="article-title">
+      <a [routerLink]="['/articles', article.id]">{{ article.title }}</a>
+    </h3>
+    <p class="article-excerpt" *ngIf="!showFullContent">{{ getArticleExcerpt(article.content) }}</p>
+    <div class="article-content" *ngIf="showFullContent" [innerHTML]="article.content"></div>
+    <div class="article-author" *ngIf="article.author">
+      <span class="author-name">By {{ article.author.firstName }} {{ article.author.lastName }}</span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-button color="primary" [routerLink]="['/articles', article.id]" *ngIf="!showFullContent">Read More</a>
+  </mat-card-actions>
+</mat-card>
